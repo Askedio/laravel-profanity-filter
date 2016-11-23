@@ -30,6 +30,9 @@ class ProfanityFilterServiceProvider extends ServiceProvider
     {
         $this->loadTranslationsFrom(realpath(__DIR__.'/../../resources/lang'), 'Laravel5ProfanityFilter');
 
-        $this->publishes([realpath(__DIR__.'/../../resources/config/profanity.php') => config_path('profanity.php')], 'config');
+        $this->publishes([
+          realpath(__DIR__.'/../../resources/config/profanity.php') => config_path('profanity.php'),
+          realpath(__DIR__.'/../../resources/lang') => resource_path('lang/vendor/profanity'),
+        ], 'config');
     }
 }
