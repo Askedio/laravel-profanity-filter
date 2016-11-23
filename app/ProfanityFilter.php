@@ -18,11 +18,10 @@ class ProfanityFilter
 
     protected $config = [];
 
-
     public function __construct()
     {
         $this->config = config('profanity');
-        
+
         $this->replaceFullWords = $this->config['replaceFullWords'];
 
         $this->strReplace = $this->config['strReplace'];
@@ -49,7 +48,7 @@ class ProfanityFilter
         return preg_replace_callback($this->censorChecks, function ($matches) {
             return $this->replaceWithReplace($matches[0]);
         }, $string);
-  	}
+    }
 
     private function replaceWithReplace($string)
     {
@@ -61,9 +60,9 @@ class ProfanityFilter
     private function generateCensorChecks()
     {
         foreach ($this->badWords as $word) {
-            $this->censorChecks[] =  $this->replaceWords($word);
+            $this->censorChecks[] = $this->replaceWords($word);
         }
-  	}
+    }
 
     private function replaceWords($string)
     {
@@ -81,6 +80,6 @@ class ProfanityFilter
 
     public function randCensor($chars, $len)
     {
-        return str_shuffle(str_repeat($chars, intval($len/strlen($chars))).substr($chars, 0, ($len%strlen($chars))));
+        return str_shuffle(str_repeat($chars, intval($len / strlen($chars))).substr($chars, 0, ($len % strlen($chars))));
     }
 }

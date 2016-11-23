@@ -2,8 +2,8 @@
 
 namespace Askedio\Laravel5ProfanityFilter\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Askedio\Laravel5ProfanityFilter\ProfanityFilter;
+use Illuminate\Support\ServiceProvider;
 
 class ProfanityFilterServiceProvider extends ServiceProvider
 {

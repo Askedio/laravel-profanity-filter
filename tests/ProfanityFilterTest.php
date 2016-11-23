@@ -1,4 +1,5 @@
 <?php
+
 namespace Askedio\Laravel5ProfanityFilter\Tests;
 
 use Askedio\Laravel5ProfanityFilter\ProfanityFilter;
@@ -19,8 +20,8 @@ class ProfanityFilterTest extends TestCase
 
     public function testMultiCharReplaceWith()
     {
-      \Config::set('profanity.replaceFullWords', true);
-      \Config::set('profanity.replaceWith', '**');
+        \Config::set('profanity.replaceFullWords', true);
+        \Config::set('profanity.replaceWith', '**');
         $this->assertEquals('hi you fucking **** **** ****!', app('profanityFilter')->filter('hi you fucking cunt fuck shit!'));
     }
 }
