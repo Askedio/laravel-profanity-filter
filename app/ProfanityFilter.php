@@ -88,7 +88,7 @@ class ProfanityFilter
         return str_ireplace(array_keys($this->strReplace), array_values($this->strReplace), $string);
     }
 
-    public function randomCensorChar($len)
+    private function randomCensorChar($len)
     {
         $strlen = strlen($this->replaceWith);
 
