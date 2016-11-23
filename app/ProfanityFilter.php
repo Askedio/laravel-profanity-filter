@@ -8,7 +8,7 @@ class ProfanityFilter
 
     protected $badWords = [];
 
-    protected $censorChecks = [];
+    protected $filterChecks = [];
 
     protected $replaceFullWords = true;
 
@@ -20,22 +20,33 @@ class ProfanityFilter
 
     protected $config = [];
 
+    protected $filteredStrings = [];
+
+    protected $wasFiltered = false;
+
     public function __construct($config, $badWordsArray)
     {
         $this->config = $config;
 
         $this->strReplace = $this->config['strReplace'];
 
-        $this->replaceFullWords($this->config['replaceFullWords']);
-
-        $this->replaceWith($this->config['replaceWith']);
+        $this->reset();
 
         $this->badWords = array_merge(
             $this->config['defaults'],
             $badWordsArray
         );
 
-        $this->generateCensorChecks();
+        $this->generateFilterChecks();
+    }
+
+    public function reset()
+    {
+        $this->replaceFullWords($this->config['replaceFullWords']);
+
+        $this->replaceWith($this->config['replaceWith']);
+
+        return $this;
     }
 
     public function replaceWith($string)
@@ -53,62 +64,93 @@ class ProfanityFilter
     {
         $this->replaceFullWords = $boolean;
 
-        $this->generateCensorChecks();
+        $this->generateFilterChecks();
 
         return $this;
     }
 
-    public function filter($string)
+    private function resetFiltered()
     {
+        $this->filteredStrings = [];
+
+        $this->wasFiltered = false;
+    }
+
+    public function filter($string, $details = null)
+    {
+        $this->resetFiltered();
+
         if (!is_string($string) || !trim($string)) {
             return $string;
         }
 
-        return $this->filterString($string);
+        $filtered = $this->filterString($string);
+
+        if ($details) {
+            return [
+                'orig' => $string,
+                'clean' => $filtered,
+                'hasMatch' => $this->wasFiltered,
+                'matched' => $this->filteredStrings
+            ];
+        }
+
+        return $filtered;
     }
 
     private function filterString($string)
     {
-        return preg_replace_callback($this->censorChecks, function ($matches) {
+        return preg_replace_callback($this->filterChecks, function ($matches) {
             return $this->replaceWithFilter($matches[0]);
         }, $string);
     }
 
+    private function setFiltered($string)
+    {
+        array_push($this->filteredStrings, $string);
+
+        if (!$this->wasFiltered) {
+            $this->wasFiltered = true;
+        }
+    }
+
     private function replaceWithFilter($string)
     {
+        $this->setFiltered($string);
+
         $strlen = strlen($string);
 
         if ($this->multiCharReplace) {
             return str_repeat($this->replaceWith, $strlen);
         }
 
-        return $this->randomCensorChar($strlen);
+        return $this->randomFilterChar($strlen);
     }
 
-    private function generateCensorChecks()
+    private function generateFilterChecks()
     {
         foreach ($this->badWords as $string) {
-            $this->censorChecks[] = $this->getCensorRegexp($string);
+            $this->filterChecks[] = $this->getFilterRegexp($string);
         }
     }
 
-    private function getCensorRegexp($string)
+    private function getFilterRegexp($string)
     {
-        $replaceCensor = $this->replaceCensor($string);
+        $replaceFilter = $this->replaceFilter($string);
 
         if ($this->replaceFullWords) {
-            return '/\b'.$replaceCensor.'\b/i';
+            return '/\b'.$replaceFilter.'\b/i';
         }
 
-        return '/'.$replaceCensor.'/i';
+        return '/'.$replaceFilter.'/i';
     }
 
-    private function replaceCensor($string)
+    private function replaceFilter($string)
     {
         return str_ireplace(array_keys($this->strReplace), array_values($this->strReplace), $string);
     }
 
-    private function randomCensorChar($len)
+    private function randomFilterChar($len)
     {
         return str_shuffle(str_repeat($this->replaceWith, intval($len / $this->replaceWithLength)).substr($this->replaceWith, 0, ($len % $this->replaceWithLength)));
     }

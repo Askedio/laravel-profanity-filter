@@ -37,6 +37,12 @@ class ProfanityFilterTest extends TestCase
         $this->assertEquals('hi you ****ing **** **** ****!', app('profanityFilter')->replaceFullWords(false)->filter($this->string));
     }
 
+    public function testMultipleFiltersWithReset()
+    {
+        $this->assertEquals('hi you fucking #### #### ####!', app('profanityFilter')->replaceWith('#')->filter($this->string));
+        $this->assertEquals('hi you ****ing **** **** ****!', app('profanityFilter')->reset()->replaceFullWords(false)->filter($this->string));
+    }
+
     public function testEsLanguage()
     {
         app()->setLocale('es');
@@ -47,5 +53,20 @@ class ProfanityFilterTest extends TestCase
     public function testEmptyFilter()
     {
         $this->assertEquals(' ', app('profanityFilter')->filter(' '));
+    }
+
+    public function testFilterDetails()
+    {
+        $this->assertEquals([
+          "orig" => "hi you fucking cunt fuck shit!",
+          "clean" => "hi you ****ing **** **** ****!",
+          "hasMatch" => true,
+          "matched" => [
+            0 => "fuck",
+            1 => "shit",
+            2 => "cunt",
+            3 => "fuck",
+          ]
+        ], app('profanityFilter')->replaceFullWords(false)->filter($this->string, true));
     }
 }
