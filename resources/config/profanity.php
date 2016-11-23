@@ -50,5 +50,5 @@ return [
     'defaults' => [
         'fuck',
         'shit',
-    ]
+    ],
 ];
