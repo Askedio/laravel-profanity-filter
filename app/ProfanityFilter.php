@@ -16,19 +16,19 @@ class ProfanityFilter
 
     protected $strReplace = [];
 
+    protected $replaceWithLength;
+
     protected $config = [];
 
     public function __construct()
     {
         $this->config = config('profanity');
 
-        $this->replaceFullWords = $this->config['replaceFullWords'];
-
         $this->strReplace = $this->config['strReplace'];
 
-        $this->replaceWith = $this->config['replaceWith'];
+        $this->replaceFullWords($this->config['replaceFullWords']);
 
-        $this->multiCharReplace = strlen($this->replaceWith) === 1;
+        $this->replaceWith($this->config['replaceWith']);
 
         $this->badWords = array_merge(
             $this->config['defaults'],
@@ -38,10 +38,30 @@ class ProfanityFilter
         $this->generateCensorChecks();
     }
 
+    public function replaceWith($string)
+    {
+        $this->replaceWith = $string;
+
+        $this->replaceWithLength = strlen($this->replaceWith);
+
+        $this->multiCharReplace = $this->replaceWithLength === 1;
+
+        return $this;
+    }
+
+    public function replaceFullWords($boolean)
+    {
+        $this->replaceFullWords = $boolean;
+
+        $this->generateCensorChecks();
+
+        return $this;
+    }
+
     public function filter($string)
     {
         if (!is_string($string) || !trim($string)) {
-            return '';
+            return $string;
         }
 
         return $this->filterString($string);
@@ -90,8 +110,6 @@ class ProfanityFilter
 
     private function randomCensorChar($len)
     {
-        $strlen = strlen($this->replaceWith);
-
-        return str_shuffle(str_repeat($this->replaceWith, intval($len / $strlen)).substr($this->replaceWith, 0, ($len % $strlen)));
+        return str_shuffle(str_repeat($this->replaceWith, intval($len / $this->replaceWithLength)).substr($this->replaceWith, 0, ($len % $this->replaceWithLength)));
     }
 }
