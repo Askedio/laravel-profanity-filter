@@ -33,5 +33,10 @@ $string = app('profanityFilter')->filter('something with a bad word');
 ```
 The `$string` will contain the filtered result.
 
+You can also define things inline
+```php
+$string = app('profanityFilter')->replaceWith('#')->replaceFullWords(false)->filter('something with a bad word'));
+```
+
 # Credits
 This package is based on [banbuilder](https://github.com/snipe/banbuilder).
