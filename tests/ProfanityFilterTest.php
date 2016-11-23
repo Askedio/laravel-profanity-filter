@@ -24,4 +24,9 @@ class ProfanityFilterTest extends TestCase
         \Config::set('profanity.replaceWith', '**');
         $this->assertEquals('hi you fucking **** **** ****!', app('profanityFilter')->filter('hi you fucking cunt fuck shit!'));
     }
+
+    public function testEmptyFilter()
+    {
+        $this->assertEquals('', app('profanityFilter')->filter(' '));
+    }
 }

@@ -12,7 +12,7 @@ class ProfanityFilter
 
     protected $replaceFullWords = true;
 
-    protected $multiReplacer = false;
+    protected $multiCharReplace = false;
 
     protected $strReplace = [];
 
@@ -28,7 +28,7 @@ class ProfanityFilter
 
         $this->replaceWith = $this->config['replaceWith'];
 
-        $this->multiReplacer = strlen($this->replaceWith) === 1;
+        $this->multiCharReplace = strlen($this->replaceWith) === 1;
 
         $this->badWords = array_merge(
             $this->config['defaults'],
@@ -40,37 +40,47 @@ class ProfanityFilter
 
     public function filter($string)
     {
-        return $this->censorString($string);
+        if (!is_string($string) || !trim($string)) {
+            return '';
+        }
+        
+        return $this->filterString($string);
     }
 
-    private function censorString($string)
+    private function filterString($string)
     {
         return preg_replace_callback($this->censorChecks, function ($matches) {
-            return $this->replaceWithReplace($matches[0]);
+            return $this->replaceWithFilter($matches[0]);
         }, $string);
     }
 
-    private function replaceWithReplace($string)
+    private function replaceWithFilter($string)
     {
-        return $this->multiReplacer
-          ? str_repeat($this->replaceWith, strlen($string))
-          : $this->randCensor($this->replaceWith, strlen($string));
+        $strlen = strlen($string);
+
+        if ($this->multiCharReplace) {
+            return str_repeat($this->replaceWith, $strlen);
+        }
+
+        return $this->randomCensorChar($strlen);
     }
 
     private function generateCensorChecks()
     {
-        foreach ($this->badWords as $word) {
-            $this->censorChecks[] = $this->replaceWords($word);
+        foreach ($this->badWords as $string) {
+            $this->censorChecks[] = $this->getCensorRegexp($string);
         }
     }
 
-    private function replaceWords($string)
+    private function getCensorRegexp($string)
     {
+        $replaceCensor = $this->replaceCensor($string);
+
         if ($this->replaceFullWords) {
-            return '/\b'.$this->replaceCensor($string).'\b/i';
+            return '/\b'.$replaceCensor.'\b/i';
         }
 
-        return '/'.$this->replaceCensor($string).'/i';
+        return '/'.$replaceCensor.'/i';
     }
 
     private function replaceCensor($string)
@@ -78,8 +88,10 @@ class ProfanityFilter
         return str_ireplace(array_keys($this->strReplace), array_values($this->strReplace), $string);
     }
 
-    public function randCensor($chars, $len)
+    public function randomCensorChar($len)
     {
-        return str_shuffle(str_repeat($chars, intval($len / strlen($chars))).substr($chars, 0, ($len % strlen($chars))));
+        $strlen = strlen($this->replaceWith);
+
+        return str_shuffle(str_repeat($this->replaceWith, intval($len / $strlen)).substr($this->replaceWith, 0, ($len % $strlen)));
     }
 }
