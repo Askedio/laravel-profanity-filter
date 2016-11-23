@@ -20,9 +20,9 @@ class ProfanityFilter
 
     protected $config = [];
 
-    public function __construct()
+    public function __construct($config, $badWordsArray)
     {
-        $this->config = config('profanity');
+        $this->config = $config;
 
         $this->strReplace = $this->config['strReplace'];
 
@@ -32,7 +32,7 @@ class ProfanityFilter
 
         $this->badWords = array_merge(
             $this->config['defaults'],
-            trans('Laravel5ProfanityFilter::profanity')
+            $badWordsArray
         );
 
         $this->generateCensorChecks();

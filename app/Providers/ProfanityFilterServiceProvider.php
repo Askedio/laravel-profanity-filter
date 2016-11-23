@@ -17,7 +17,7 @@ class ProfanityFilterServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(realpath(__DIR__.'/../../resources/config/profanity.php'), 'profanity');
 
         $this->app->singleton('profanityFilter', function () {
-            return new ProfanityFilter();
+            return new ProfanityFilter(config('profanity'), trans('Laravel5ProfanityFilter::profanity'));
         });
     }
 

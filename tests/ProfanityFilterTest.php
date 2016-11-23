@@ -37,6 +37,13 @@ class ProfanityFilterTest extends TestCase
         $this->assertEquals('hi you ****ing **** **** ****!', app('profanityFilter')->replaceFullWords(false)->filter($this->string));
     }
 
+    public function testEsLanguage()
+    {
+        app()->setLocale('es');
+
+        $this->assertEquals('hi you ****ing cunt **** ******!', app('profanityFilter')->replaceFullWords(false)->filter('hi you fucking cunt fuck mierda!'));
+    }
+
     public function testEmptyFilter()
     {
         $this->assertEquals(' ', app('profanityFilter')->filter(' '));
