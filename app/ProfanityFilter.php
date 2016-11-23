@@ -43,7 +43,7 @@ class ProfanityFilter
         if (!is_string($string) || !trim($string)) {
             return '';
         }
-        
+
         return $this->filterString($string);
     }
 
