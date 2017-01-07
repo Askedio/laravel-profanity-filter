@@ -17,7 +17,9 @@ class ProfanityFilterServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(realpath(__DIR__.'/../../resources/config/profanity.php'), 'profanity');
 
         $this->app->singleton('profanityFilter', function () {
-            return new ProfanityFilter(config('profanity'), trans('Laravel5ProfanityFilter::profanity'));
+            $translations = trans('profanity::profanity');
+
+            return new ProfanityFilter(config('profanity'), is_array($translations) ? $translations : []);
         });
     }
 
@@ -28,11 +30,23 @@ class ProfanityFilterServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadTranslationsFrom(realpath(__DIR__.'/../../resources/lang'), 'Laravel5ProfanityFilter');
+        $this->loadTranslationsFrom(realpath(__DIR__.'/../../resources/lang'), 'profanity');
 
         $this->publishes([
           realpath(__DIR__.'/../../resources/config/profanity.php') => config_path('profanity.php'),
           realpath(__DIR__.'/../../resources/lang') => resource_path('lang/vendor/profanity'),
         ], 'config');
+
+        app('validator')->extend('profanity', function($attribute, $value, $parameters, $validator) {
+            $replace = [
+              $attribute => app('profanityFilter')->filter($value)
+            ];
+
+            request()->replace($replace);
+
+            $validator->setData($replace);
+
+            return true;
+        });
     }
 }
