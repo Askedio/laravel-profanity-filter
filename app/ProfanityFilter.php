@@ -53,7 +53,7 @@ class ProfanityFilter
     {
         $this->replaceWith = $string;
 
-        $this->replaceWithLength = strlen($this->replaceWith);
+        $this->replaceWithLength = mb_strlen($this->replaceWith);
 
         $this->multiCharReplace = $this->replaceWithLength === 1;
 
@@ -118,7 +118,7 @@ class ProfanityFilter
     {
         $this->setFiltered($string);
 
-        $strlen = strlen($string);
+        $strlen = mb_strlen($string);
 
         if ($this->multiCharReplace) {
             return str_repeat($this->replaceWith, $strlen);
@@ -139,10 +139,10 @@ class ProfanityFilter
         $replaceFilter = $this->replaceFilter($string);
 
         if ($this->replaceFullWords) {
-            return '/\b'.$replaceFilter.'\b/i';
+            return '/\b'.$replaceFilter.'\b/iu';
         }
 
-        return '/'.$replaceFilter.'/i';
+        return '/'.$replaceFilter.'/iu';
     }
 
     private function replaceFilter($string)
