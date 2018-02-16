@@ -88,10 +88,10 @@ class ProfanityFilter
 
         if ($details) {
             return [
-                'orig' => $string,
-                'clean' => $filtered,
+                'orig'     => $string,
+                'clean'    => $filtered,
                 'hasMatch' => $this->wasFiltered,
-                'matched' => $this->filteredStrings
+                'matched'  => $this->filteredStrings,
             ];
         }
 

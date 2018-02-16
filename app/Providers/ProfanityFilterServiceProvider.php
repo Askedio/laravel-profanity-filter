@@ -34,12 +34,12 @@ class ProfanityFilterServiceProvider extends ServiceProvider
 
         $this->publishes([
           realpath(__DIR__.'/../../resources/config/profanity.php') => config_path('profanity.php'),
-          realpath(__DIR__.'/../../resources/lang') => resource_path('lang/vendor/profanity'),
+          realpath(__DIR__.'/../../resources/lang')                 => resource_path('lang/vendor/profanity'),
         ], 'config');
 
-        app('validator')->extend('profanity', function($attribute, $value, $parameters, $validator) {
+        app('validator')->extend('profanity', function ($attribute, $value, $parameters, $validator) {
             $replace = [
-              $attribute => app('profanityFilter')->filter($value)
+              $attribute => app('profanityFilter')->filter($value),
             ];
 
             request()->replace($replace);

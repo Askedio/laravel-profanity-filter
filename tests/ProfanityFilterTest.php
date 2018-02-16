@@ -58,15 +58,15 @@ class ProfanityFilterTest extends TestCase
     public function testFilterDetails()
     {
         $this->assertEquals([
-          "orig" => "hi you fucking cunt fuck shit!",
-          "clean" => "hi you ****ing **** **** ****!",
-          "hasMatch" => true,
-          "matched" => [
-            0 => "fuck",
-            1 => "shit",
-            2 => "cunt",
-            3 => "fuck",
-          ]
+          'orig'     => 'hi you fucking cunt fuck shit!',
+          'clean'    => 'hi you ****ing **** **** ****!',
+          'hasMatch' => true,
+          'matched'  => [
+            0 => 'fuck',
+            1 => 'shit',
+            2 => 'cunt',
+            3 => 'fuck',
+          ],
         ], app('profanityFilter')->replaceFullWords(false)->filter($this->string, true));
     }
 }
