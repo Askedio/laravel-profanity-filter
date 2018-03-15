@@ -1,0 +1,16 @@
+language: php
+php:
+  - "7.0"
+  - "7.1"
+
+before_script:
+  - curl -sS https://getcomposer.org/installer | php -- --filename=composer
+  - chmod +x composer
+  - composer install -n
+
+script:
+  - php vendor/bin/phpunit
+
+branches:
+  only:
+    - master
