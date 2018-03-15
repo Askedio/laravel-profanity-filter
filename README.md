@@ -2,7 +2,7 @@
 [![StyleCI](https://styleci.io/repos/74531615/shield?branch=master)](https://styleci.io/repos/74531615)
 
 # Laravel Profanity Filter
-Filter profanity, or other words, out of a string using Laravels [localization](https://laravel.com/docs/5.6/localization) feature or with any PHP application and some custom coding.
+Filter profanity, or other bad words, out of a string using Laravels [localization](https://laravel.com/docs/5.6/localization) feature or with any PHP application and some custom coding.
 
 # Installation
 ```
