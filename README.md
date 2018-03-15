@@ -1,3 +1,5 @@
+[![StyleCI](https://styleci.io/repos/74531615/shield?branch=master)](https://styleci.io/repos/74531615)
+
 # Laravel 5 & PHP Profanity Filter
 Filter profanity, or other words, out of a string using Laravels [localization](https://laravel.com/docs/5.3/localization) feature or with any PHP application and some custom coding.
 
@@ -5,7 +7,7 @@ Filter profanity, or other words, out of a string using Laravels [localization](
 ```
 composer require askedio/laravel5-profanity-filter
 ```
-## Register in `config/app.php`
+## Register in `config/app.php`. pre Laravel 5.5
 Register the service providers to enable the package:
 ```
 Askedio\Laravel5ProfanityFilter\Providers\ProfanityFilterServiceProvider::class,
