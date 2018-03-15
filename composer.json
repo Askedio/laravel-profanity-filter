@@ -22,7 +22,7 @@
         "psr-4": {
             "Askedio\\Laravel5ProfanityFilter\\Tests\\" : "tests"
         }
-    }
+    },
     "extra": {
         "laravel": {
             "providers": [
