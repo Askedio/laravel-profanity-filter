@@ -1,15 +1,16 @@
 [![Build Status](https://travis-ci.org/Askedio/Laravel5-Profanity-Filter.svg?branch=master)](https://travis-ci.org/Askedio/Laravel5-Profanity-Filter)
 [![StyleCI](https://styleci.io/repos/74531615/shield?branch=master)](https://styleci.io/repos/74531615)
 
-# Laravel 5 & PHP Profanity Filter
+# Laravel Profanity Filter
 Filter profanity, or other words, out of a string using Laravels [localization](https://laravel.com/docs/5.6/localization) feature or with any PHP application and some custom coding.
 
 # Installation
 ```
 composer require askedio/laravel5-profanity-filter
 ```
-## Register in `config/app.php`. pre Laravel 5.5
-Register the service providers to enable the package:
+
+## Register in config/app.php.
+Register the service providers in Laravel 5.4 or lower to enable the package:
 ```
 Askedio\Laravel5ProfanityFilter\Providers\ProfanityFilterServiceProvider::class,
 ```
@@ -24,6 +25,7 @@ You can edit the default list of words to filter along with the settings in `con
 `replaceWith` can also be a string of chars to be randomly chosen to replace with, like `'&%^@#'`.
 
 You can create your own list of words, per language, in `resources/lang/[language]/profanity.php`.
+
 
 # Usage
 ```php
