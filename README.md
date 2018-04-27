@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/Askedio/Laravel5-Profanity-Filter.svg?branch=master)](https://travis-ci.org/Askedio/Laravel5-Profanity-Filter)
+[![Build Status](https://travis-ci.org/Askedio/laravel-profanity-filter.svg?branch=master)](https://travis-ci.org/Askedio/laravel-profanity-filter)
 [![StyleCI](https://styleci.io/repos/74531615/shield?branch=master)](https://styleci.io/repos/74531615)
 
 # Laravel Profanity Filter
