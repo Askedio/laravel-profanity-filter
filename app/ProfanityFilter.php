@@ -110,7 +110,7 @@ class ProfanityFilter
         $filtered = $this->filterString($string);
 
         foreach ($this->badWords as $badword) {
-            if (strpos($string, $badword) !== false) {
+            if (stripos($string, $badword) !== false) {
                 return false;
             }
         }
