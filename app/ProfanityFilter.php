@@ -100,11 +100,10 @@ class ProfanityFilter
 
     public function noProfanity($string)
     {
-
         $this->resetFiltered();
 
         if (!is_string($string) || !trim($string)) {
-            return null;
+            return;
         }
 
         $filtered = $this->filterString($string);
@@ -115,7 +114,7 @@ class ProfanityFilter
             }
         }
 
-        return true; 
+        return true;
     }
 
     private function filterString($string)
