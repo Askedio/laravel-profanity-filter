@@ -38,15 +38,7 @@ class ProfanityFilterServiceProvider extends ServiceProvider
         ], 'config');
 
         app('validator')->extend('profanity', function ($attribute, $value, $parameters, $validator) {
-            $replace = [
-              $attribute => app('profanityFilter')->filter($value),
-            ];
-
-            request()->replace($replace);
-
-            $validator->setData($replace);
-
-            return true;
+            return app('profanityFilter')->noProfanity($value);
         });
     }
 }

@@ -98,6 +98,25 @@ class ProfanityFilter
         return $filtered;
     }
 
+    public function noProfanity($string)
+    {
+        $this->resetFiltered();
+
+        if (!is_string($string) || !trim($string)) {
+            return;
+        }
+
+        $filtered = $this->filterString($string);
+
+        foreach ($this->badWords as $badword) {
+            if (stripos($string, $badword) !== false) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     private function filterString($string)
     {
         return preg_replace_callback($this->filterChecks, function ($matches) {
