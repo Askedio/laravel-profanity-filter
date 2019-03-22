@@ -38,14 +38,6 @@ You can also define things inline
 $string = app('profanityFilter')->replaceWith('#')->replaceFullWords(false)->filter('something with a bad word'));
 ```
 
-You can also use the `profanity` filter with Laravels [Validation](https://laravel.com/docs/5.6/validation) feature:
-
-```php
-$request->validate([
-    'title' => 'required|profanity|unique:posts|max:255',
-]);
-```
-
 # Options
 * `filter($string = string, $details = boolean)` pass a string to be filtered.
 
