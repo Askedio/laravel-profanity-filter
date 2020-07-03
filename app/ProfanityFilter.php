@@ -148,6 +148,8 @@ class ProfanityFilter
 
     private function generateFilterChecks()
     {
+        $this->filterChecks = [];
+
         foreach ($this->badWords as $string) {
             $this->filterChecks[] = $this->getFilterRegexp($string);
         }
